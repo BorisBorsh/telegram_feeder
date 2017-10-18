@@ -24,12 +24,11 @@ def check_updates():
         request = requests.post(url + token + '/getUpdates', data=data)
     except:
         print('Error getting updates.')
+        return
 
     if not request.status_code == 200:
         print('Server connection error')
-
-    if not request.json()['ok']:
-        print('JSON request fail.')
+        return
 
     for update in request.json()['result']:
         offset = update['update_id']

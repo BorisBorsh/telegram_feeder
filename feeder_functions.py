@@ -9,34 +9,7 @@ from datetime import datetime
 filename = 'feeder_log.txt'
 
 LOG_FILENAME = 'feeder.log'
-DEFAULT_SERVO_PIN_NUMBER = 11
-PWM_FREQ_HZ = 50
-PWM_START_DUTY_CYCLE = 0
-PWM_ROTATE_DUTY_CYCLE = 3
 
-def servo_rotate(servo_rotate_time_sec=6):
-    """Rotate servo to dispence food"""
-    try:
-        # Set up GPIO
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(DEFAULT_SERVO_PIN_NUMBER, GPIO.OUT)
-
-        # Start pulse width modulation
-        pwm = GPIO.PWM(DEFAULT_SERVO_PIN_NUMBER, 50)
-        pwm.start(PWM_START_DUTY_CYCLE)
-        
-        # Rorate servo
-        pwm.ChangeDutyCycle(PWM_ROTATE_DUTY_CYCLE)
-        sleep(servo_rotate_time_sec)
-        
-        # Stop servo
-        pwm.stop()
-        print('A portion of food was added.')
-    except:
-        print('Looks like servo gone mad!')
-    finally:
-        # Clean all GPIO pins settings
-        GPIO.cleanup()
 
 
 def log_feeding_time(feed_time):

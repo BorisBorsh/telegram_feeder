@@ -1,36 +1,36 @@
 import requests
+import servo
+import logging
 
-from config import token, url
+LOG_FILENAME = 'feeder.log'
+logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG,
+                    datefmt='%a, %Y-%b-%d %H:%M:%S',
+                    format='%(asctime)s %(message)s')
+
+from config import telegram_bot_token, telegram_api_url
 from time import sleep
-from feeder_functions import feed_pet, log_feeding_time, get_time
-from feeder_functions import get_date_time, get_temp, show_log
+
+#
+#from feeder_functions import feed_pet, log_feeding_time, 
+from feeder_functions import get_date_time, get_time, get_temp, show_log
 
 
-# Time interval for checking_updates().
-check_updates_interval = 3
-# Store updates id.
-offset = 0
-# Feeding schedule.
-feeding_time = ('07:46', '13:14', '16:00', '17:33')
-
-
-def check_updates():
+def check_updates(last_update_id):
     """Cheking new incoming messages."""
-    global offset
-    global chat_id
-    data = {'offset': offset + 1, 'limit': 5, 'timeout': 0}
+    data = {'offset': last_update_id + 1, 'limit': 5, 'timeout': 0}
 
     try:
-        request = requests.post(url + token + '/getUpdates', data=data)
+        url = telegram_api_url + telegram_bot_token + '/getUpdates'
+        response = requests.post(url, data=data)
     except:
         print('Error getting updates.')
         return
 
-    if not request.status_code == 200:
+    if not response.status_code == 200:
         print('Server connection error')
         return
 
-    for update in request.json()['result']:
+    for update in response.json()['result']:
         offset = update['update_id']
         chat_id = update['message']['chat']['id']
         message = update['message']['text']
@@ -42,9 +42,8 @@ def check_updates():
 def run_command(chat_id, command):
     """Perform recieved commands."""
     if command == '/feed':
-        feed_pet(servo_rotate_time=3)
-        current_date_time = get_date_time()
-        log_feeding_time(current_date_time)
+        servo.feed_pet(servo_rotate_time=3)
+        logging.info('-Fed pets.')
         send_text(chat_id, 'I fed pets, master!')
     elif command == '/test':
         send_text(chat_id, 'Hello! I am feeder bot and I can read ya!')
@@ -69,23 +68,29 @@ def send_text(chat_id, text):
 
 
 if __name__ == '__main__':
+    
+    FEEDING_SCHEDULE = ['10:30', '12:00', '16:00', '17:00']
+    
+    CHECK_UPDATES_INTERVAL_SEC = 3
+    
+    last_update_id = 0
+    
     while True:
         try:
-            check_updates()
+            check_updates(last_update_id)
             current_time = get_time()
             current_date_time = get_date_time()
 
-            if current_time in feeding_time:
-                feed_pet()
+            if current_time in FEEDING_SCHEDULE:
+                servo.feed_pet()
+                logging.info('-Fed pets.')
                 try:
                     send_text(chat_id, str(current_date_time) +
                               ' - Pets were fed automatically.')
                 except:
                     print('Send messege error after auto feed.')
-                log_feeding_time(current_date_time)
                 sleep(60)
-
-            sleep(check_updates_interval)
+            sleep(CHECK_UPDATES_INTERVAL_SEC)
 
         except KeyboardInterrupt:
             print('Aborted by user.')

@@ -1,27 +1,21 @@
 import RPi.GPIO as GPIO
 import Adafruit_DHT
-from collections import deque
 
+from collections import deque
 from time import sleep
 from datetime import datetime
 
 
-filename = 'feeder_log.txt'
-
-LOG_FILENAME = 'feeder.log'
-
-
-
-def log_feeding_time(feed_time):
-    """Logging feeding time to console."""
-    message = feed_time + ' - Feeder fed a pet!'
-
-    try:
-        with open(filename, 'a') as f:
-            f.write('\n' + message)
-    except FileNotFoundError:
-        print('File not found!')
-    print(message)
+#def log_feeding_time(feed_time):
+#    """Logging feeding time to console."""
+#    message = feed_time + ' - Feeder fed a pet!'
+#
+#    try:
+#        with open(filename, 'a') as f:
+#            f.write('\n' + message)
+#    except FileNotFoundError:
+#        print('File not found!')
+#    print(message)
 
 
 def get_time():

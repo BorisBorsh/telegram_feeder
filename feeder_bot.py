@@ -3,20 +3,25 @@ import servo
 import logging
 
 LOG_FILENAME = 'feeder.log'
-logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG,
-                    datefmt='%a, %Y-%b-%d %H:%M:%S',
-                    format='%(asctime)s %(message)s')
+FORMAT  = '%(asctime)s %(levelname)s %(message)s'
+logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO,
+                    datefmt='%a, %Y-%b-%d %H:%M:%S',format = FORMAT)
 
 from config import telegram_bot_token, telegram_api_url
 from time import sleep
+
+last_update_id = 0
+
 
 #
 #from feeder_functions import feed_pet, log_feeding_time, 
 from feeder_functions import get_date_time, get_time, get_temp, show_log
 
 
-def check_updates(last_update_id):
+def check_updates():
     """Cheking new incoming messages."""
+    global last_update_id
+    global chat_id
     data = {'offset': last_update_id + 1, 'limit': 5, 'timeout': 0}
 
     try:
@@ -31,18 +36,20 @@ def check_updates(last_update_id):
         return
 
     for update in response.json()['result']:
-        offset = update['update_id']
+        last_update_id = update['update_id']
         chat_id = update['message']['chat']['id']
         message = update['message']['text']
         parameters = (chat_id, message)
+        
+        run_command(chat_id, message)
 
-        run_command(*parameters)
+
 
 
 def run_command(chat_id, command):
     """Perform recieved commands."""
     if command == '/feed':
-        servo.feed_pet(servo_rotate_time=3)
+        servo.feed_pet()
         logging.info('-Fed pets.')
         send_text(chat_id, 'I fed pets, master!')
     elif command == '/test':
@@ -73,11 +80,9 @@ if __name__ == '__main__':
     
     CHECK_UPDATES_INTERVAL_SEC = 3
     
-    last_update_id = 0
-    
     while True:
         try:
-            check_updates(last_update_id)
+            check_updates()
             current_time = get_time()
             current_date_time = get_date_time()
 
@@ -86,7 +91,7 @@ if __name__ == '__main__':
                 logging.info('-Fed pets.')
                 try:
                     send_text(chat_id, str(current_date_time) +
-                              ' - Pets were fed automatically.')
+                                      ' - Pets were fed automatically.')
                 except:
                     print('Send messege error after auto feed.')
                 sleep(60)

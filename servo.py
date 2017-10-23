@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 
-class Servo:
+class ServoContext:
     """Define a context menager Servo"""
     def __init__(self, SERVO_PIN_BOARD_NUMBER):
         self.SERVO_PIN_BOARD_NUMBER = SERVO_PIN_BOARD_NUMBER
@@ -35,10 +35,9 @@ def servo_rotate(SERVO_ROTATE_TIME_SEC, SERVO_PIN_BOARD_NUMBER):
     print('A portion of food was added.')
 
 
-def feed_pet():
-    SERVO_ROTATE_TIME_SEC = 3
+def feed_pet(SERVO_ROTATE_TIME_SEC=3):
     SERVO_PIN_BOARD_NUMBER = 11
     """Controlling servo to feed pets"""
-    with Servo(SERVO_PIN_BOARD_NUMBER):
+    with ServoContext(SERVO_PIN_BOARD_NUMBER):
         servo_rotate(SERVO_ROTATE_TIME_SEC, SERVO_PIN_BOARD_NUMBER)
 

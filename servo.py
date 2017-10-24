@@ -10,21 +10,6 @@ logging.config.fileConfig('logging.config')
 logger = logging.getLogger('servoLogger')
 
 
-#LOG_FILENAME = 'feeder.log'
-
-#FORMATTER  = '%(asctime)s  %(name)s %(levelname)s %(message)s'
-
-#logger = logging.getLogger('servoLogger')
-#logger.setLevel(logging.INFO)
-
-#fh = logging.FileHandler(LOG_FILENAME)
-#formatter = logging.Formatter(FORMATTER, '%a, %Y-%b-%d %H:%M:%S')
-#fh.setFormatter(formatter)
-
-#logger.addHandler(fh)
-
-
- 
 class ServoContext:
     """Define a context menager Servo"""
     def __init__(self, SERVO_PIN_BOARD_NUMBER):
@@ -63,5 +48,3 @@ def feed_pet(SERVO_ROTATE_TIME_SEC=3):
     with ServoContext(SERVO_PIN_BOARD_NUMBER):
         servo_rotate(SERVO_ROTATE_TIME_SEC, SERVO_PIN_BOARD_NUMBER)
         logger.info('- Fed pet.')
-
-feed_pet()

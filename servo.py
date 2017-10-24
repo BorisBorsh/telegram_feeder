@@ -1,26 +1,29 @@
 import RPi.GPIO as GPIO
 import logging
+import logging.config
 
 from time import sleep
 
 
-LOG_FILENAME = 'feeder.log'
-#FORMAT = '%(asctime)s  %(name)s %(levelname)s %(message)s'
-FORMATTER  = '%(asctime)s  %(name)s %(levelname)s %(message)s'
+logging.config.fileConfig('logging.config')
 
 logger = logging.getLogger('servoLogger')
-logger.setLevel(logging.INFO)
 
-fh = logging.FileHandler(LOG_FILENAME)
-formatter = logging.Formatter(FORMATTER, '%a, %Y-%b-%d %H:%M:%S')
-fh.setFormatter(formatter)
 
-logger.addHandler(fh)
+#LOG_FILENAME = 'feeder.log'
 
-#logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO,
-                    #datefmt='%a, %Y-%b-%d %H:%M:%S',format = FORMAT)
-#logging.basicConfig(filename=LOG_FILENAME,
- #                   datefmt='%a, %Y-%b-%d %H:%M:%S',format = FORMAT)
+#FORMATTER  = '%(asctime)s  %(name)s %(levelname)s %(message)s'
+
+#logger = logging.getLogger('servoLogger')
+#logger.setLevel(logging.INFO)
+
+#fh = logging.FileHandler(LOG_FILENAME)
+#formatter = logging.Formatter(FORMATTER, '%a, %Y-%b-%d %H:%M:%S')
+#fh.setFormatter(formatter)
+
+#logger.addHandler(fh)
+
+
  
 class ServoContext:
     """Define a context menager Servo"""
@@ -61,3 +64,4 @@ def feed_pet(SERVO_ROTATE_TIME_SEC=3):
         servo_rotate(SERVO_ROTATE_TIME_SEC, SERVO_PIN_BOARD_NUMBER)
         logger.info('- Fed pet.')
 
+feed_pet()

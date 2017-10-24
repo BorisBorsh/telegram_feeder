@@ -1,11 +1,6 @@
 import requests
 import servo
-import logging
 
-LOG_FILENAME = 'feeder.log'
-FORMAT  = '%(asctime)s %(levelname)s %(message)s'
-logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO,
-                    datefmt='%a, %Y-%b-%d %H:%M:%S',format = FORMAT)
 
 from config import telegram_bot_token, telegram_api_url
 from time import sleep
@@ -50,7 +45,6 @@ def run_command(chat_id, command):
     """Perform recieved commands."""
     if command == '/feed':
         servo.feed_pet()
-        logging.info('-Fed pets.')
         send_text(chat_id, 'I fed pets, master!')
     elif command == '/test':
         send_text(chat_id, 'Hello! I am feeder bot and I can read ya!')
@@ -88,7 +82,6 @@ if __name__ == '__main__':
 
             if current_time in FEEDING_SCHEDULE:
                 servo.feed_pet()
-                logging.info('-Fed pets.')
                 try:
                     send_text(chat_id, str(current_date_time) +
                                       ' - Pets were fed automatically.')

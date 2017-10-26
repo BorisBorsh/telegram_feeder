@@ -2,4 +2,4 @@ __pycache__
 *.pyc
 *.txt
 *.log
-config.py
+telegram_config.py

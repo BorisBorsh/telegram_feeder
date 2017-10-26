@@ -30,11 +30,11 @@ def servo_rotate(SERVO_ROTATE_TIME_SEC, SERVO_PIN_BOARD_NUMBER):
     PWM_FREQ_HZ = 50
     PWM_START_DUTY_CYCLE = 0
     PWM_ROTATE_DUTY_CYCLE = 3
-    
+
     # Start pulse width modulation
     pwm = GPIO.PWM(SERVO_PIN_BOARD_NUMBER, PWM_FREQ_HZ)
     pwm.start(PWM_START_DUTY_CYCLE)
-    
+
     # Rorate servo
     pwm.ChangeDutyCycle(PWM_ROTATE_DUTY_CYCLE)
     sleep(SERVO_ROTATE_TIME_SEC)

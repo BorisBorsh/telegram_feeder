@@ -11,4 +11,3 @@ def get_date_time():
     """Return current date and time."""
     now = datetime.today()
     return now.strftime('%Y-%m-%d %H:%M')
-

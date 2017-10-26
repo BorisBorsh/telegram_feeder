@@ -2,17 +2,13 @@ import requests
 import servo
 import current_date_time
 import temperature
+import show_log
 
 
 from telegram_config import telegram_bot_token, telegram_api_url
 from time import sleep
 
 last_update_id = 0
-
-
-#
-#from feeder_functions import feed_pet, log_feeding_time, 
-from feeder_functions import show_log
 
 
 def check_updates():
@@ -36,11 +32,8 @@ def check_updates():
         last_update_id = update['update_id']
         chat_id = update['message']['chat']['id']
         message = update['message']['text']
-        parameters = (chat_id, message)
-        
+
         run_command(chat_id, message)
-
-
 
 
 def run_command(chat_id, command):
@@ -54,9 +47,9 @@ def run_command(chat_id, command):
         temp_message = temperature.get_temp_message()
         send_text(chat_id, temp_message)
     elif command == '/log':
-        timings_message = show_log()
-        print(timings_message)
-        send_text(chat_id, timings_message)
+        last_ten_log_messages = show_log.get_feed_log()
+        print(last_ten_log_messages)
+        send_text(chat_id, last_ten_log_messages)
     else:
         send_text(chat_id, 'I dont get it.')
 
@@ -72,11 +65,11 @@ def send_text(chat_id, text):
 
 
 if __name__ == '__main__':
-    
-    FEEDING_SCHEDULE = ['10:30', '12:00', '16:00', '17:00']
-    
+
+    FEEDING_SCHEDULE = ['10:30', '12:00', '16:00', '21:58']
+
     CHECK_UPDATES_INTERVAL_SEC = 3
-    
+
     while True:
         try:
             check_updates()
@@ -87,7 +80,7 @@ if __name__ == '__main__':
                 current_date_time = current_date_time.get_date_time()
                 try:
                     send_text(chat_id, str(current_date_time) +
-                                      ' - Pets were fed automatically.')
+                                    ' - Pets were fed automatically.')
                 except:
                     print('Send messege error after auto feed.')
                 sleep(60)

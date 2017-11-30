@@ -3,6 +3,7 @@ import servo
 import current_date_time
 import temperature
 import show_log
+import show_schedule
 
 
 from telegram_config import telegram_bot_token, telegram_api_url
@@ -10,6 +11,7 @@ from time import sleep
 
 last_update_id = 0
 
+FEEDING_SCHEDULE = ['10:30', '12:00', '16:00', '21:58']
 
 def check_updates():
     """Cheking new incoming messages."""
@@ -38,18 +40,27 @@ def check_updates():
 
 def run_command(chat_id, command):
     """Perform recieved commands."""
+
     if command == '/feed':
         servo.feed_pet()
         send_text(chat_id, 'I fed pets, master!')
+
     elif command == '/test':
         send_text(chat_id, 'Hello! I am feeder bot and I can read ya!')
+
     elif command == '/temp':
         temp_message = temperature.get_temp_message()
         send_text(chat_id, temp_message)
+
     elif command == '/log':
         last_ten_log_messages = show_log.get_feed_log()
         print(last_ten_log_messages)
         send_text(chat_id, last_ten_log_messages)
+
+    elif command == '/schl':
+        schedule_message = show_schedule.get_schedule_message(FEEDING_SCHEDULE)
+        send_text(chat_id, schedule_message)
+
     else:
         send_text(chat_id, 'I dont get it.')
 
@@ -65,8 +76,6 @@ def send_text(chat_id, text):
 
 
 if __name__ == '__main__':
-
-    FEEDING_SCHEDULE = ['10:30', '12:00', '16:00', '21:58']
 
     CHECK_UPDATES_INTERVAL_SEC = 3
 

@@ -1,5 +1,5 @@
 import requests
-import servo
+import motor
 import current_date_time
 import temperature
 import show_log
@@ -42,15 +42,15 @@ def run_command(chat_id, command):
     """Perform recieved commands."""
 
     if command == '/feed':
-        servo.feed_pet()
+        motor.dispence_food()
         send_text(chat_id, 'I fed pets, master!')
 
     elif command == '/test':
         send_text(chat_id, 'Hello! I am feeder bot and I can read ya!')
 
     elif command == '/temp':
-        temp_message = temperature.get_temp_message()
-        send_text(chat_id, temp_message)
+       temp_message = temperature.get_temp_message()
+       send_text(chat_id, temp_message)
 
     elif command == '/log':
         last_ten_log_messages = show_log.get_feed_log()
@@ -85,7 +85,7 @@ if __name__ == '__main__':
             current_time = current_date_time.get_time()
 
             if current_time in FEEDING_SCHEDULE:
-                servo.feed_pet()
+                motor.dispence_food()
                 current_date_time = current_date_time.get_date_time()
                 try:
                     send_text(chat_id, str(current_date_time) +

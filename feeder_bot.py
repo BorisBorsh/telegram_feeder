@@ -4,14 +4,18 @@ import current_date_time
 import temperature
 import show_log
 import show_schedule
+import logging
 
 
 from telegram_config import telegram_bot_token, telegram_api_url
 from time import sleep
 
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S', level=logging.INFO)
+
 last_update_id = 0
 
-FEEDING_SCHEDULE = ['10:30', '12:00', '16:00', '21:58']
+FEEDING_SCHEDULE = ['07:00', '19:00']
+
 
 def check_updates():
     """Cheking new incoming messages."""
@@ -49,8 +53,8 @@ def run_command(chat_id, command):
         send_text(chat_id, 'Hello! I am feeder bot and I can read ya!')
 
     elif command == '/temp':
-       temp_message = temperature.get_temp_message()
-       send_text(chat_id, temp_message)
+       tempereture_message = temperature.get_tempereture_message()
+       send_text(chat_id, tempereture_message)
 
     elif command == '/log':
         last_ten_log_messages = show_log.get_feed_log()
@@ -86,10 +90,10 @@ if __name__ == '__main__':
 
             if current_time in FEEDING_SCHEDULE:
                 motor.dispence_food()
-                current_date_time = current_date_time.get_date_time()
+                current_date_time_info = current_date_time.get_date_time()
                 try:
-                    send_text(chat_id, str(current_date_time) +
-                                    ' - Pets were fed automatically.')
+                    send_text(chat_id, + ' - Pets were fed\
+                        automatically.').format(current_date_time_info)
                 except:
                     print('Send messege error after auto feed.')
                 sleep(60)

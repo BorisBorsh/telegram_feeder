@@ -46,7 +46,7 @@ def check_current_position_of_portions_counter():
         sleep(0.7)
 
 
-def dispence_food(portions_to_dispence=3):
+def dispence_food(portions_to_dispence=2):
     """Rotate motor to dispence food"""
     dispenced_portions_counter = 0
 

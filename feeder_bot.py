@@ -4,17 +4,18 @@ import current_date_time
 import temperature
 import show_log
 import show_schedule
-import logging
-
+import send_message
+import portions_at_schedule
 
 from telegram_config import telegram_bot_token, telegram_api_url
 from time import sleep
 
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S', level=logging.INFO)
 
 last_update_id = 0
 
-FEEDING_SCHEDULE = ['07:00', '19:00']
+FEEDING_SCHEDULE = ['07:00', '13:00', '19:30']
+PORTIONS_TO_DISPENCE = [2, 1, 2]
+portions_on_schedule_dict = portions_at_schedule.create_portions_on_schedule_dict(FEEDING_SCHEDULE, PORTIONS_TO_DISPENCE)
 
 
 def check_updates():
@@ -47,36 +48,26 @@ def run_command(chat_id, command):
 
     if command == '/feed':
         motor.dispence_food()
-        send_text(chat_id, 'I fed pets, master!')
+        send_message.send_text(chat_id, 'I fed pets, master!')
 
     elif command == '/test':
-        send_text(chat_id, 'Hello! I am feeder bot and I can read ya!')
+        send_message.send_text(chat_id, 'Hello! I am feeder bot and I can read ya!')
 
     elif command == '/temp':
        tempereture_message = temperature.get_tempereture_message()
-       send_text(chat_id, tempereture_message)
+       send_message.send_text(chat_id, tempereture_message)
 
     elif command == '/log':
         last_ten_log_messages = show_log.get_feed_log()
         print(last_ten_log_messages)
-        send_text(chat_id, last_ten_log_messages)
+        send_message.send_text(chat_id, last_ten_log_messages)
 
     elif command == '/schl':
         schedule_message = show_schedule.get_schedule_message(FEEDING_SCHEDULE)
-        send_text(chat_id, schedule_message)
+        send_message.send_text(chat_id, schedule_message)
 
     else:
-        send_text(chat_id, 'I dont get it.')
-
-
-def send_text(chat_id, text):
-    """Sending text message."""
-    data = {'chat_id': chat_id, 'text': text}
-    try:
-        url = telegram_api_url + telegram_bot_token + '/sendMessage'
-        requests.post(url, data=data)
-    except:
-        print('Send message error.')
+        send_message.send_text(chat_id, 'I dont get it.')
 
 
 if __name__ == '__main__':
@@ -89,11 +80,10 @@ if __name__ == '__main__':
             current_time = current_date_time.get_time()
 
             if current_time in FEEDING_SCHEDULE:
-                motor.dispence_food()
+                motor.dispence_food(portions_to_dispence=portions_on_schedule_dict[current_time])
                 current_date_time_info = current_date_time.get_date_time()
                 try:
-                    send_text(chat_id, + ' - Pets were fed\
-                        automatically.').format(current_date_time_info)
+                    send_message.send_text(chat_id, ' - Pets were fed ' + str(current_date_time_info) + ' automatically.')
                 except:
                     print('Send messege error after auto feed.')
                 sleep(60)

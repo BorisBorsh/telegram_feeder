@@ -1,7 +1,7 @@
 import requests
 
 from telegram_config import telegram_bot_token, telegram_api_url
-from telegram_config import USER_CHAT_ID_LIST
+from telegram_config import AUTHORIZED_USER_CHAT_ID_LIST
 
 
 def send_text(chat_id, text):
@@ -16,7 +16,7 @@ def send_text(chat_id, text):
 
 def send_text_to_all_users(text):
     """Send text message to all users in USER_CHAT_ID_LIST """
-    for user in USER_CHAT_ID_LIST:
+    for user in AUTHORIZED_USER_CHAT_ID_LIST:
         send_text(user, text)
 
 if __name__ == '__main__':

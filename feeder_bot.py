@@ -8,7 +8,7 @@ import show_log
 import show_schedule
 
 from telegram_config import telegram_bot_token, telegram_api_url
-from telegram_config import USER_CHAT_ID_LIST, BORSH_ID
+from telegram_config import AUTHORIZED_USER_CHAT_ID_LIST, BORSH_ID
 from time import sleep
 
 
@@ -47,13 +47,14 @@ def check_updates():
 
 def run_command(chat_id, command):
     """Perform recieved commands."""
-    if chat_id in USER_CHAT_ID_LIST:
+    if chat_id in AUTHORIZED_USER_CHAT_ID_LIST:
 
         if command == '/feed':
             motor.dispence_food()
             send_message.send_text(chat_id, 'I fed pets, master!')
 
         elif command == '/help':
+            help_message = ''
             help_message += '/feed - feed pets out of schedule'
             help_message += '\n/temp - get temperature readings'
             help_message += '\n/log - last 10 log messages of feeding'
@@ -69,7 +70,7 @@ def run_command(chat_id, command):
             send_message.send_text(chat_id, last_ten_log_messages)
 
         elif command == '/schl':
-            schedule_message = show_schedule.get_schedule_message(schedule)
+            schedule_message = show_schedule.get_schedule_and_portions_message(portions_on_schedule_dict)
             send_message.send_text(chat_id, schedule_message)
 
         else:

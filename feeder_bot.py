@@ -1,13 +1,14 @@
 import requests
-import motor
 import current_date_time
-import temperature
-import show_log
-import show_schedule
 import send_message
 import portions_at_schedule
+import temperature
+import motor
+import show_log
+import show_schedule
 
 from telegram_config import telegram_bot_token, telegram_api_url
+from telegram_config import USER_CHAT_ID_LIST, BORSH_ID
 from time import sleep
 
 
@@ -43,31 +44,40 @@ def check_updates():
         run_command(chat_id, message)
 
 
+
 def run_command(chat_id, command):
     """Perform recieved commands."""
+    if chat_id in USER_CHAT_ID_LIST:
 
-    if command == '/feed':
-        motor.dispence_food()
-        send_message.send_text(chat_id, 'I fed pets, master!')
+        if command == '/feed':
+            motor.dispence_food()
+            send_message.send_text(chat_id, 'I fed pets, master!')
 
-    elif command == '/test':
-        send_message.send_text(chat_id, 'Hello! I am feeder bot and I can read ya!')
+        elif command == '/help':
+            help_message += '/feed - feed pets out of schedule'
+            help_message += '/temp - get temperature readings'
+            help_message += '/log - last 10 log messages of feeding'
+            help_message += '/schl - show schedule and portions'
+            send_message.send_text(chat_id, help_message)
 
-    elif command == '/temp':
-       tempereture_message = temperature.get_tempereture_message()
-       send_message.send_text(chat_id, tempereture_message)
+        elif command == '/temp':
+           tempereture_message = temperature.get_tempereture_message()
+           send_message.send_text(chat_id, tempereture_message)
 
-    elif command == '/log':
-        last_ten_log_messages = show_log.get_feed_log()
-        print(last_ten_log_messages)
-        send_message.send_text(chat_id, last_ten_log_messages)
+        elif command == '/log':
+            last_ten_log_messages = show_log.get_feed_log()
+            send_message.send_text(chat_id, last_ten_log_messages)
 
-    elif command == '/schl':
-        schedule_message = show_schedule.get_schedule_message(FEEDING_SCHEDULE)
-        send_message.send_text(chat_id, schedule_message)
+        elif command == '/schl':
+            schedule_message = show_schedule.get_schedule_message(schedule)
+            send_message.send_text(chat_id, schedule_message)
+
+        else:
+            send_message.send_text(chat_id, 'I dont get it.')
 
     else:
-        send_message.send_text(chat_id, 'I dont get it.')
+        unauthorized_user_message = 'Unauthorized user ' + str(chat_id)
+        send_message.send_text(BORSH_ID, unauthorized_user_message)
 
 
 if __name__ == '__main__':
@@ -80,13 +90,16 @@ if __name__ == '__main__':
             current_time = current_date_time.get_time()
 
             if current_time in FEEDING_SCHEDULE:
+
                 motor.dispence_food(portions_to_dispence=portions_on_schedule_dict[current_time])
                 current_date_time_info = current_date_time.get_date_time()
+
                 try:
-                    send_message.send_text(chat_id, ' - Pets were fed ' + str(current_date_time_info) + ' automatically.')
+                    send_message.send_text_to_all_users('Pets were fed ' + str(current_date_time_info) + ' automatically.')
                 except:
                     print('Send messege error after auto feed.')
                 sleep(60)
+
             sleep(CHECK_UPDATES_INTERVAL_SEC)
 
         except KeyboardInterrupt:

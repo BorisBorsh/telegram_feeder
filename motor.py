@@ -28,7 +28,9 @@ class MotorContext:
 
 
 def start_motor_rotation():
-    """Starts motor rotation to dispence food"""
+    """Starts motor rotation to dispence food. Motor is connected to
+    raspbbery pi using a relay. This function controlling relay
+    signal pin"""
     GPIO.output(MOTOR_PIN_BOARD_NUMBER, True)
 
 
@@ -66,4 +68,4 @@ def dispence_food(portions_to_dispence=2):
 
 
 if __name__ == '__main__':
-    dispence_food()
+    dispence_food(portions_to_dispence=1)

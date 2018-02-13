@@ -1,7 +1,7 @@
 def get_schedule_message(FEEDING_SCHEDULE):
     """Show current feeding schedule"""
-    msg = ''
+    message = ''
     for time in FEEDING_SCHEDULE:
-        msg += ' ' + time + ','
+        message += ' ' + time + ','
     
-    return 'Schedule: {}.'.format(msg[:-1])
+    return 'Schedule: {}.'.format(message[:-1])

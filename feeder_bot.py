@@ -4,7 +4,6 @@ import send_message
 import portions_at_schedule
 import motor
 import show_schedule
-import commands
 
 from telegram_config import AUTHORIZED_USER_CHAT_ID_LIST, BORSH_ID
 from time import sleep
@@ -15,19 +14,6 @@ last_update_id = 0
 FEEDING_SCHEDULE = ['07:00', '13:00', '19:30']
 PORTIONS_TO_DISPENCE = [2, 1, 2]
 portions_on_schedule_dict = portions_at_schedule.create_portions_on_schedule_dict(FEEDING_SCHEDULE, PORTIONS_TO_DISPENCE)
-
-
-def parse_response_and_run_command(response):
-    """Parse response and run command."""
-    for update in response.json()['result']:
-        chat_id = update['message']['chat']['id']
-        command = update['message']['text']
-
-        if command == '/schl':
-            schedule_message = show_schedule.get_schedule_and_portions_message(portions_on_schedule_dict)
-            send_message.send_text(chat_id, schedule_message)
-        else:
-            commands.run_command(chat_id, command)
 
 
 if __name__ == '__main__':

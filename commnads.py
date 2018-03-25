@@ -2,6 +2,8 @@ import send_message
 import show_log
 import temperature
 
+from telegram_config import AUTHORIZED_USER_CHAT_ID_LIST
+
 
 def run_command(chat_id, command):
     """Perform recieved commands."""

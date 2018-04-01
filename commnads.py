@@ -1,13 +1,12 @@
 import send_message
 import show_log
 import temperature
-
-from telegram_config import AUTHORIZED_USER_CHAT_ID_LIST
+import user_authentication
 
 
 def run_command(chat_id, command):
     """Perform recieved commands."""
-    if chat_id in AUTHORIZED_USER_CHAT_ID_LIST:
+    if user_authentication.user_in_authorized_user_chad_id_list(chat_id):
 
         if command == '/feed':
             motor.dispence_food()
@@ -33,5 +32,4 @@ def run_command(chat_id, command):
             send_message.send_text(chat_id, 'I dont get it.')
 
     else:
-        unauthorized_user_message = 'Unauthorized user ' + str(chat_id)
-        send_message.send_text(BORSH_ID, unauthorized_user_message)
+        return

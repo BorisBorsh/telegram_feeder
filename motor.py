@@ -42,10 +42,11 @@ def stop_motor_rotation():
 def check_current_position_of_portions_counter():
     """Counting dispenced portions of food. To avoid microswitch
     contact bounce it is neccesary to get while loop. Then detect when
-    microswitch would break circle."""
+    microswitch would break circle.
+    GPIO.input(PORTIONS_COUNTER_SENSOR_PIN_BOARD_NUMBER) == 0 means that microswitch is circled."""
     while GPIO.input(PORTIONS_COUNTER_SENSOR_PIN_BOARD_NUMBER) == 0:
         #print("microswitch is switched on.")
-        sleep(0.7)
+        sleep(0.7) # 0.7 sec is experemental value. Depends on microswitch type
 
 
 def dispence_food(portions_to_dispence=1):
@@ -61,7 +62,7 @@ def dispence_food(portions_to_dispence=1):
             if GPIO.input(PORTIONS_COUNTER_SENSOR_PIN_BOARD_NUMBER) == 0:
                 check_current_position_of_portions_counter()
                 dispenced_portions_counter += 1
-            sleep(.3)
+            sleep(.3) # 0.3 sec is experemental value
 
         stop_motor_rotation()
         logger.info('- Fed pet.')

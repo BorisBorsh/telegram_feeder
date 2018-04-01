@@ -15,11 +15,9 @@ last_update_id = 0
 FEEDING_SCHEDULE = ['07:00', '13:00', '19:30']
 PORTIONS_TO_DISPENCE = [2, 1, 2]
 portions_on_schedule_dict = portions_at_schedule.create_portions_on_schedule_dict(FEEDING_SCHEDULE, PORTIONS_TO_DISPENCE)
+CHECK_UPDATES_INTERVAL_SEC = 3
 
-
-if __name__ == '__main__':
-
-    CHECK_UPDATES_INTERVAL_SEC = 3
+def main():
 
     while True:
         try:
@@ -34,10 +32,14 @@ if __name__ == '__main__':
                 motor.dispence_food(portions_to_dispence=portions_on_schedule_dict[current_time])
                 current_date_time_info = current_date_time.get_date_time()
                 send_message.send_text_to_all_users('Pets were fed ' + str(current_date_time_info) + ' automatically.')
-                sleep(60)
+                sleep(60) # whait 60 sec to avoid multiple food dispence at feeding schedule time
 
             sleep(CHECK_UPDATES_INTERVAL_SEC)
 
         except KeyboardInterrupt:
             print('Aborted by user.')
             break
+
+
+if __name__ == '__main__':
+    main()

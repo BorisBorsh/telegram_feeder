@@ -4,6 +4,7 @@ import send_message
 import portions_at_schedule
 import motor
 import show_schedule
+import check_updates
 
 from telegram_config import AUTHORIZED_USER_CHAT_ID_LIST, BORSH_ID
 from time import sleep
@@ -22,7 +23,7 @@ if __name__ == '__main__':
 
     while True:
         try:
-            response, last_update_id = check_updates_method_post(last_update_id)
+            response, last_update_id = check_updates.check_updates_method_post(last_update_id)
             if response:
                 parse_response_and_run_command(response)
 

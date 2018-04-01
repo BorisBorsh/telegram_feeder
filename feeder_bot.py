@@ -1,28 +1,26 @@
-import requests
 import current_date_time
-import send_message
 import portions_at_schedule
 import motor
 import show_schedule
 import check_updates
 
-from telegram_config import AUTHORIZED_USER_CHAT_ID_LIST, BORSH_ID
 from time import sleep
 
+CHECK_UPDATES_INTERVAL_SEC = 3
 
 last_update_id = 0
 
-FEEDING_SCHEDULE = ['07:00', '13:00', '19:30']
+FEEDING_SCHEDULE = ['07:00', '13:00', '19:00']
 PORTIONS_TO_DISPENCE = [2, 1, 2]
 portions_on_schedule_dict = portions_at_schedule.create_portions_on_schedule_dict(FEEDING_SCHEDULE, PORTIONS_TO_DISPENCE)
-CHECK_UPDATES_INTERVAL_SEC = 3
+
 
 def main():
 
     while True:
         try:
             response, last_update_id = check_updates.check_updates_method_post(last_update_id)
-            if response:
+            if response.json()['result']:
                 parse_response_and_run_command(response)
 
             current_time = current_date_time.get_time()

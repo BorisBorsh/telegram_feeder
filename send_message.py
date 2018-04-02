@@ -1,6 +1,6 @@
 import requests
 
-from telegram_config import telegram_bot_token, telegram_api_url
+from telegram_config import TELEGRAM_BOT_TOKEN, TELEGRAM_API_URL
 from telegram_config import AUTHORIZED_USER_CHAT_ID_LIST
 
 
@@ -8,7 +8,7 @@ def send_text(chat_id, text):
     """Sending text message"""
     data = {'chat_id': chat_id, 'text': text}
     try:
-        url = telegram_api_url + telegram_bot_token + '/sendMessage'
+        url = telegram_api_url + TELEGRAM_BOT_TOKEN + '/sendMessage'
         requests.post(url, data=data)
     except:
         print('Send message error.')

@@ -6,10 +6,11 @@ from telegram_config import TELEGRAM_BOT_TOKEN, TELEGRAM_API_URL
 def check_updates_method_post(last_update_id):
     """Send request to telegram server."""
     data = {'offset': last_update_id + 1, 'limit': 5, 'timeout': 0}
+    proxies = dict(http='socks5://148.251.34.12:1080', https='socks5://148.251.34.12:1080')
+    data = {'offset': last_update_id + 1, 'limit': 5, 'timeout': 0}
     try:
         url = TELEGRAM_API_URL + TELEGRAM_BOT_TOKEN + '/getUpdates'
-        response = requests.post(url, data=data)
-        print(response.json()['result'])
+        response = response = requests.get(url, params=data, proxies=proxies)
     except requests.exceptions.RequestException as e:
         print('Exception after update happend: ', e)
         return None, last_update_id

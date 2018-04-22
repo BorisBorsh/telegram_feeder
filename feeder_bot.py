@@ -1,8 +1,10 @@
 import current_date_time
 import portions_at_schedule
 import motor
-import show_schedule
+#import show_schedule
 import check_updates
+import send_message
+import parse_and_run_command
 
 from time import sleep
 
@@ -14,14 +16,13 @@ FEEDING_SCHEDULE = ['07:00', '13:00', '19:00']
 PORTIONS_TO_DISPENCE = [2, 1, 2]
 portions_on_schedule_dict = portions_at_schedule.create_portions_on_schedule_dict(FEEDING_SCHEDULE, PORTIONS_TO_DISPENCE)
 
-
 def main():
 
     while True:
         try:
             response, last_update_id = check_updates.check_updates_method_post(last_update_id)
             if response.json()['result']:
-                parse_response_and_run_command(response)
+                parse_and_run_command.parse_response_and_run_command(response)
 
             current_time = current_date_time.get_time()
 

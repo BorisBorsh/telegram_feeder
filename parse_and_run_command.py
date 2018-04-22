@@ -1,4 +1,4 @@
-from commands import run_command
+import commands
 
 def parse_response_and_run_command(response):
     """Parse response and run command."""

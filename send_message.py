@@ -11,8 +11,8 @@ def send_text(chat_id, text):
     try:
         url = telegram_api_url + TELEGRAM_BOT_TOKEN + '/sendMessage'
         response = response = requests.get(url, params=data, proxies=proxies)
-    except:
-        print('Send message error.')
+    except requests.exceptions.RequestException as e:
+        print('Exception after send_text happend: ', e):
 
 
 def send_text_to_all_users(text):

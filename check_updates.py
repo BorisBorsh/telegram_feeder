@@ -6,8 +6,8 @@ from telegram_config import TELEGRAM_BOT_TOKEN, TELEGRAM_API_URL
 def check_updates_method_post(last_update_id):
     """Send request to telegram server."""
     data = {'offset': last_update_id + 1, 'limit': 5, 'timeout': 0}
-    proxies = dict(http='socks5://148.251.34.12:1080', https='socks5://148.251.34.12:1080')
-    data = {'offset': last_update_id + 1, 'limit': 5, 'timeout': 0}
+    #It is possible to use proxies = dict(http='socks5://51.254.45.80:3128', socks5='https://51.254.45.80:3128')
+    proxies = dict(http='http://51.254.45.80:3128', https='https://51.254.45.80:3128')
     try:
         url = TELEGRAM_API_URL + TELEGRAM_BOT_TOKEN + '/getUpdates'
         response = response = requests.get(url, params=data, proxies=proxies)

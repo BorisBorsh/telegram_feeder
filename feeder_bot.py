@@ -9,7 +9,7 @@ import parse_and_run_command
 from time import sleep
 from proxy_parser import Proxy
 
-CHECK_UPDATES_INTERVAL_SEC = 3
+CHECK_UPDATES_INTERVAL_SEC = 10
 
 FEEDING_SCHEDULE = ['07:00', '13:00', '19:00']
 PORTIONS_TO_DISPENCE = [2, 1, 2]

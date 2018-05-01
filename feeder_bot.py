@@ -11,16 +11,15 @@ from proxy_parser import Proxy
 
 CHECK_UPDATES_INTERVAL_SEC = 3
 
-last_update_id = 0
-proxy = Proxy()
-proxies = proxy.get_availible_proxy_address()
-
 FEEDING_SCHEDULE = ['07:00', '13:00', '19:00']
 PORTIONS_TO_DISPENCE = [2, 1, 2]
 portions_on_schedule_dict = portions_at_schedule.create_portions_on_schedule_dict(FEEDING_SCHEDULE, PORTIONS_TO_DISPENCE)
 
 
 def main():
+    last_update_id = 0
+    proxy = Proxy()
+    proxies = proxy.get_availible_proxy_address()
 
     while True:
         try:

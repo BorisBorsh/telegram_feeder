@@ -32,6 +32,7 @@ class Proxy():
                 print('Trying proxy ' + proxy_ip)
                 responce = requests.get(url, proxies=proxies, timeout=1)
                 if responce.status_code == 200:
+                    print('Found availible proxy ' + proxy_ip)
                     return proxies
             except requests.exceptions.RequestException as e:
                 print('Connection error')

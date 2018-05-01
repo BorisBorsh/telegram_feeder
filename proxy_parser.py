@@ -18,19 +18,22 @@ class Proxy():
 
     def get_availible_proxy_address(self):
         bs = BeautifulSoup(self.html, 'html.parser')
+        proxy_ip_list = []
         for item in bs.find_all('td'):
             if '.' in item.text:
-                proxy_ip = item.text
-                proxies = dict(http='http://' + proxy_ip, https='https://'+ proxy_ip)
-                url = 'http://ya.ru'
-                try:
-                    print('Trying proxy ' + proxy_ip)
-                    responce = requests.get(url, proxies=proxies, timeout=1)
-                    if responce.status_code == 200:
-                        return proxies
-                except requests.exceptions.RequestException as e:
-                    print('Connection error')
-                    continue
+                proxy_ip_list.append(item.text)
+
+        for proxy_ip in proxy_ip_list:
+            proxies = dict(http='http://' + proxy_ip, https='https://'+ proxy_ip)
+            url = 'http://ya.ru'
+            try:
+                print('Trying proxy ' + proxy_ip)
+                responce = requests.get(url, proxies=proxies, timeout=1)
+                if responce.status_code == 200:
+                    return proxies
+            except requests.exceptions.RequestException as e:
+                print('Connection error')
+                continue
 
 
 if __name__ == '__main__':

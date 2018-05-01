@@ -17,12 +17,14 @@ class Proxy():
             print('Exception after get proxy happend: ', e)
 
     def get_availible_proxy_address(self):
+        """Method retruns availible proxy ip address"""
         bs = BeautifulSoup(self.html, 'html.parser')
         proxy_ip_list = []
         for item in bs.find_all('td'):
             if '.' in item.text:
                 proxy_ip_list.append(item.text)
 
+        #Find availible proxy ip in proxy_ip_list
         for proxy_ip in proxy_ip_list:
             proxies = dict(http='http://' + proxy_ip, https='https://'+ proxy_ip)
             url = 'http://ya.ru'

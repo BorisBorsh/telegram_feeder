@@ -7,20 +7,24 @@ import send_message
 import parse_and_run_command
 
 from time import sleep
+from proxy_parser import Proxy
 
 CHECK_UPDATES_INTERVAL_SEC = 3
 
 last_update_id = 0
+proxy = Proxy()
+proxies = proxy.get_availible_proxy_address()
 
 FEEDING_SCHEDULE = ['07:00', '13:00', '19:00']
 PORTIONS_TO_DISPENCE = [2, 1, 2]
 portions_on_schedule_dict = portions_at_schedule.create_portions_on_schedule_dict(FEEDING_SCHEDULE, PORTIONS_TO_DISPENCE)
 
+
 def main():
 
     while True:
         try:
-            response, last_update_id = check_updates.check_updates_method_post(last_update_id)
+            response, last_update_id, proxies = check_updates.check_updates_method_get(last_update_id, proxies)
             if response.json()['result']:
                 parse_and_run_command.parse_response_and_run_command(response)
 

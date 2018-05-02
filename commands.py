@@ -17,9 +17,9 @@ def run_command(chat_id, command):
         elif command == '/help':
             help_message = ''
             help_message += '/feed - feed pets out of schedule'
-            #help_message += '\n/temp - get temperature readings'
+            help_message += '\n/temp - get temperature readings'
             help_message += '\n/log - last 10 log messages of feeding'
-            help_message += '\n/schl - show schedule and portions'
+            #help_message += '\n/schl - show schedule and portions'
             send_message.send_text(chat_id, help_message)
             return True
 

@@ -10,11 +10,15 @@ def send_text(chat_id, text):
     #Find availible working proxy to send message reliably
     proxy = Proxy()
     proxies = proxy.get_availible_proxy_address()
+    print('Preparing to send message.')
     try:
         url = TELEGRAM_API_URL + TELEGRAM_BOT_TOKEN + '/sendMessage'
         response = response = requests.get(url, params=data, proxies=proxies)
         return response.status_code
     except requests.exceptions.RequestException as e:
+        proxy = Proxy()
+        proxies = proxy.get_availible_proxy_address()
+        send_text(chat_id, text)
         print('Exception after send_text happend: ', e)
 
 

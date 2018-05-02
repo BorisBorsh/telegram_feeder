@@ -11,8 +11,8 @@ class Proxy():
 
     def __init__(self):
         try:
-            responce = requests.get(self.availible_proxy_site_url)
-            self.html = responce.text
+            response = requests.get(self.availible_proxy_site_url)
+            self.html = response.text
         except requests.exceptions.RequestException as e:
             print('Exception after get proxy happend: ', e)
 
@@ -30,8 +30,8 @@ class Proxy():
             url = 'http://ya.ru'
             try:
                 print('Trying proxy ' + proxy_ip)
-                responce = requests.get(url, proxies=proxies, timeout=1)
-                if responce.status_code == 200:
+                response = requests.get(url, proxies=proxies, timeout=1)
+                if response.status_code == 200:
                     print('Found availible proxy ' + proxy_ip)
                     return proxies
             except requests.exceptions.RequestException as e:

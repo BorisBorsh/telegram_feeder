@@ -27,7 +27,7 @@ def main():
 
             if response is not None:
                 if response.json()['result']:
-                    parse_and_run_command.parse_response_and_run_command(response)
+                    parse_and_run_command.parse_response_and_run_command(response, proxies)
 
             current_time = current_date_time.get_time()
 

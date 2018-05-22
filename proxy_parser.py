@@ -30,7 +30,7 @@ class Proxy():
             url = 'http://ya.ru'
             try:
                 print('Trying proxy ' + proxy_ip)
-                response = requests.get(url, proxies=proxies, timeout=0.9)
+                response = requests.get(url, proxies=proxies, timeout=1)
                 if response.status_code == 200:
                     print('Found availible proxy ' + proxy_ip)
                     return proxies

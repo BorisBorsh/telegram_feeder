@@ -24,7 +24,7 @@ def main():
     while True:
         try:
             response, last_update_id, proxies = check_updates.check_updates_method_get(last_update_id, proxies)
-            
+
             if response is not None:
                 if response.json()['result']:
                     parse_and_run_command.parse_response_and_run_command(response)
@@ -37,7 +37,7 @@ def main():
                 current_date_time_info = current_date_time.get_date_time()
                 autofeed_message = 'Pets were fed ' + str(current_date_time_info) + ' automatically.'
                 print(autofeed_message)
-                send_message.send_text_to_all_users(autofeed_message)
+                send_message.send_text_to_all_users(autofeed_message, proxies)
                 sleep(60) # whait 60 sec to avoid multiple food dispence at feeding schedule time
 
             sleep(CHECK_UPDATES_INTERVAL_SEC)

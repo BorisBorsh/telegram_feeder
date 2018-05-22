@@ -24,7 +24,7 @@ def check_updates_method_get(last_update_id, proxies):
             last_update_id = response.json()['result'][0]['update_id']
             return response, last_update_id, proxies
         else:
-            return None, last_update_id, proxies
+            return response, last_update_id, proxies
     else:
         print('Something is wrong with server response')
         #If somethig is wrong with server response

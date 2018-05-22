@@ -5,13 +5,13 @@ import motor
 import user_authentication
 
 
-def run_command(chat_id, command):
+def run_command(chat_id, command, proxies):
     """Perform recieved commands."""
     if user_authentication.user_in_authorized_user_chad_id_list(chat_id):
 
         if command == '/feed':
             motor.dispence_food()
-            send_message.send_text(chat_id, 'I fed pets, master!')
+            send_message.send_text(chat_id, 'I fed pets, master!', proxies)
             return True
 
         elif command == '/help':
@@ -20,21 +20,21 @@ def run_command(chat_id, command):
             help_message += '\n/temp - get temperature readings'
             help_message += '\n/log - last 10 log messages of feeding'
             #help_message += '\n/schl - show schedule and portions'
-            send_message.send_text(chat_id, help_message)
+            send_message.send_text(chat_id, help_message, proxies)
             return True
 
         elif command == '/temp':
            tempereture_message = temperature.get_tempereture_message()
-           send_message.send_text(chat_id, tempereture_message)
+           send_message.send_text(chat_id, tempereture_message, proxies)
            return True
 
         elif command == '/log':
             last_ten_log_messages = show_log.get_feed_log()
-            send_message.send_text(chat_id, last_ten_log_messages)
+            send_message.send_text(chat_id, last_ten_log_messages, proxies)
             return True
 
         else:
-            send_message.send_text(chat_id, 'I dont get it.')
+            send_message.send_text(chat_id, 'I dont get it.', proxies)
             return True
 
     else:

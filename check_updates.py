@@ -10,7 +10,7 @@ def check_updates_method_get(last_update_id, proxies):
     #It is possible to use 'proxies = dict(http='socks5://51.254.45.80:3128', socks5='https://51.254.45.80:3128')'
     try:
         url = TELEGRAM_API_URL + TELEGRAM_BOT_TOKEN + '/getUpdates'
-        response = requests.get(url, params=data, proxies=proxies)
+        response = requests.get(url, params=data, proxies=proxies, timeout=20)
     except requests.exceptions.RequestException as e:
         proxy = Proxy()
         proxies = proxy.get_availible_proxy_address()

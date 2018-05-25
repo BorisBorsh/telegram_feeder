@@ -12,9 +12,9 @@ def check_updates_method_get(last_update_id, proxies):
         url = TELEGRAM_API_URL + TELEGRAM_BOT_TOKEN + '/getUpdates'
         response = requests.get(url, params=data, proxies=proxies, timeout=20)
     except requests.exceptions.RequestException as e:
+        print('Exception after update happend: ', e)
         proxy = Proxy()
         proxies = proxy.get_availible_proxy_address()
-        print('Exception after update happend: ', e)
         return None, last_update_id, proxies
 
     if response.status_code == 200:

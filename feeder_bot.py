@@ -11,7 +11,7 @@ from proxy_parser import Proxy
 
 CHECK_UPDATES_INTERVAL_SEC = 15
 
-FEEDING_SCHEDULE = ['06:00','10:00','14:00','18:00', '22:00']
+FEEDING_SCHEDULE = ['06:00', '10:00', '14:00', '18:00', '22:00']
 PORTIONS_TO_DISPENCE = [1, 1, 1, 1, 1]
 portions_on_schedule_dict = portions_at_schedule.create_portions_on_schedule_dict(FEEDING_SCHEDULE, PORTIONS_TO_DISPENCE)
 

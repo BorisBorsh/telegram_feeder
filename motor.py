@@ -7,7 +7,7 @@ from time import sleep
 logging.config.fileConfig('logging.config')
 logger = logging.getLogger('servoLogger')
 
-MOTOR_PIN_BOARD_NUMBER = 10
+MOTOR_PIN_BOARD_NUMBER = 37
 PORTIONS_COUNTER_SENSOR_PIN_BOARD_NUMBER = 18
 
 
@@ -31,12 +31,12 @@ def start_motor_rotation():
     """Starts motor rotation to dispence food. Motor is connected to
     raspbbery pi using a relay. This function controlling relay
     signal pin"""
-    GPIO.output(MOTOR_PIN_BOARD_NUMBER, True)
+    GPIO.output(MOTOR_PIN_BOARD_NUMBER, GPIO.HIGH)
 
 
 def stop_motor_rotation():
     """Stops motor rotation"""
-    GPIO.output(MOTOR_PIN_BOARD_NUMBER, False)
+    GPIO.output(MOTOR_PIN_BOARD_NUMBER, GPIO.LOW)
 
 
 def check_current_position_of_portions_counter():
@@ -53,20 +53,23 @@ def dispence_food(portions_to_dispence=1):
     """Rotate motor to dispence food"""
     dispenced_portions_counter = 0
 
-    with MotorContext():
+    try:
+        with MotorContext():
 
-        while dispenced_portions_counter < portions_to_dispence:
+            while dispenced_portions_counter < portions_to_dispence:
 
-            start_motor_rotation()
+                start_motor_rotation()
 
-            if GPIO.input(PORTIONS_COUNTER_SENSOR_PIN_BOARD_NUMBER) == 0:
-                check_current_position_of_portions_counter()
-                dispenced_portions_counter += 1
-            sleep(.3) # 0.3 sec is experemental value
+                if GPIO.input(PORTIONS_COUNTER_SENSOR_PIN_BOARD_NUMBER) == 0:
+                    check_current_position_of_portions_counter()
+                    dispenced_portions_counter += 1
+                sleep(.3) # 0.3 sec is experemental value
 
-        stop_motor_rotation()
-        logger.info('- Fed pet.')
+            stop_motor_rotation()
+            logger.info('- Fed pet.')
+    except KeyboardInterrupt:
+        GPIO.cleanup()
 
 
 if __name__ == '__main__':
-    dispence_food(portions_to_dispence=1)
+    dispence_food(portions_to_dispence=2)

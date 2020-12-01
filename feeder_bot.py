@@ -11,8 +11,8 @@ from proxy_parser import Proxy
 
 CHECK_UPDATES_INTERVAL_SEC = 15
 
-FEEDING_SCHEDULE = ['07:00', '13:00', '19:00']
-PORTIONS_TO_DISPENCE = [2, 1, 2]
+FEEDING_SCHEDULE = ['06:00','10:00','14:00','18:00', '22:00']
+PORTIONS_TO_DISPENCE = [1, 1, 1, 1, 1]
 portions_on_schedule_dict = portions_at_schedule.create_portions_on_schedule_dict(FEEDING_SCHEDULE, PORTIONS_TO_DISPENCE)
 
 
@@ -42,10 +42,23 @@ def main():
 
             sleep(CHECK_UPDATES_INTERVAL_SEC)
 
-        except KeyboardInterrupt:
-            print('Aborted by user.')
-            break
+        #except KeyboardInterrupt:
+        #    print('Aborted by user.')
+        #    break
+        except :
+            print("Exeption occured. Internet connection lost")
+            current_time = current_date_time.get_time()
 
+            if current_time in FEEDING_SCHEDULE:
+
+                motor.dispence_food(portions_to_dispence=portions_on_schedule_dict[current_time])
+                current_date_time_info = current_date_time.get_date_time()
+                autofeed_message = 'Pets were fed ' + str(current_date_time_info) + ' automatically.'
+                print(autofeed_message)
+                #send_message.send_text_to_all_users(autofeed_message, proxies)
+                sleep(60) # whait 60 sec to avoid multiple food dispence at feeding schedule time
+                
+            sleep(30)
 
 if __name__ == '__main__':
     main()

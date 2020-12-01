@@ -44,9 +44,10 @@ class Proxy():
             return None
 
 if __name__ == '__main__':
-    proxy = Proxy()
-    proxies = proxy.get_availible_proxy_address()
+    #proxy = Proxy()
+   # proxies = proxy.get_availible_proxy_address()
+    proxies = None
     print(proxies)
     url = 'https://ipinfo.info/html/ip_checker.php'
     r = requests.get(url, proxies=proxies)
-    print(r.content)
+    print(r.status_code)
